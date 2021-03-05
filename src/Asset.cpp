@@ -1,19 +1,14 @@
 #include "Asset.h"
 
 #include <fstream>
+#include <string>
 
 #include "../lib/nlohmann/json.hpp"
 
 using json = nlohmann::json;
 
-char *to_char(std::string str) {
-    int n = str.length();
-    char *res = new char(n + 1);
-    strcpy(res, str.c_str());
-    return res;
-}
-
-Asset::Asset(User data, Post post, Access_Level level, std::string email, std::string password) {
+//* Constructor
+Asset::Asset(User data, Info::Post post, Info::Access_Level level, std::string email, std::string password) {
     this->data = data;
     this->post = post;
     this->level = level;
@@ -23,6 +18,7 @@ Asset::Asset(User data, Post post, Access_Level level, std::string email, std::s
     this->id = abs(this->password + h);
 }
 
+//* Save data to json file
 void Asset::save() {
     json data;
 
@@ -42,12 +38,13 @@ void Asset::save() {
         {"Password", this->password},
         {"Id", this->id}};
 
-    std::ofstream output("../data/" + this->email + ".json");
+    std::ofstream output("../data/persons" + this->email + ".json");
     output << data << std::endl;
 }
 
+//* Load data from json file
 Asset *Asset::load(std::string email, std::string password) {
-    std::ifstream input("../data/" + email + ".json");
+    std::ifstream input("../data/persons" + email + ".json");
 
     if (input.fail())
         throw std::runtime_error("User does not exist");
@@ -67,5 +64,5 @@ Asset *Asset::load(std::string email, std::string password) {
         import["User"]["Type"],
         import["User"]["Age"]};
 
-    return new Asset(user, Post(import["Access"]["Post"]), Access_Level(import["Access"]["Access Level"]), email, password);
+    return new Asset(user, Info::Post(import["Access"]["Post"]), Info::Access_Level(import["Access"]["Access Level"]), email, password);
 }

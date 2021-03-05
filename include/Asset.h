@@ -1,26 +1,26 @@
 #ifndef ASSET_H
 #define ASSET_H
 
-#include "Post.h"
-#include "Room.h"
+#include "Info.h"
 #include "User.h"
 
 class Asset {
    public:
     User data;
-    Post post;
-    Access_Level level;
+    Info::Post post;
+    Info::Access_Level level;
     std::string email;
 
-    Asset(User data, Post post, Access_Level level, std::string email, std::string password);
+    Asset(User data, Info::Post post, Info::Access_Level level, std::string email, std::string password);
 
     int getId() { return this->id; };
     void save();
-    Asset* load(std::string email, std::string password);
+    static Asset* load(std::string email, std::string password);
 
    private:
     int password;
     int id;
+    ~Asset() { Asset::save(); };
 };
 
 #endif
