@@ -1,11 +1,19 @@
 #include "Asset.h"
 
+#include <filesystem>
 #include <fstream>
 #include <string>
 
 #include "../lib/nlohmann/json.hpp"
 
+namespace fs = std::filesystem;
 using json = nlohmann::json;
+
+void checker() {
+    bool is_exist = fs::exists(fs::current_path() / "..\\data\\persons");
+    if (!is_exist)
+        fs::create_directory(fs::current_path() / "..\\data\\persons");
+}
 
 //* Constructor
 Asset::Asset(User data, Info::Post post, Info::Access_Level level, std::string email, std::string password) {
@@ -37,14 +45,15 @@ void Asset::save() {
         {"Email", this->email},
         {"Password", this->password},
         {"Id", this->id}};
-
-    std::ofstream output("../data/persons" + this->email + ".json");
+    checker();
+    std::ofstream output("../data/persons/" + this->email + ".json");
     output << data << std::endl;
 }
 
 //* Load data from json file
 Asset *Asset::load(std::string email, std::string password) {
-    std::ifstream input("../data/persons" + email + ".json");
+    checker();
+    std::ifstream input("../data/persons/" + email + ".json");
 
     if (input.fail())
         throw std::runtime_error("User does not exist");

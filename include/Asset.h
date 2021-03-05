@@ -20,7 +20,6 @@ class Asset {
    private:
     int password;
     int id;
-    ~Asset() { Asset::save(); };
 };
 
 #endif

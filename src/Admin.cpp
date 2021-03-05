@@ -1,10 +1,7 @@
-#include "../include/profile/Admin.h"
+#include <filesystem>
 
-void Admin::red_button() {
-}
-void Admin::change_of_government() {}
-void Admin::shadowing(Asset) {}
-void Admin::shadowing(Asset*) {}
-void Admin::drop(std::string) {}
-void Admin::move_out(Asset) {}
-void Admin::move_out(Asset*) {}
+namespace fs = std::filesystem;
+
+// void Admin::red_button() {
+//     std::uintmax_t n = fs::remove_all(fs::current_path() / "..\\data\\persons");
+// }
