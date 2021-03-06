@@ -4,11 +4,11 @@
 class Info {
    public:
     enum Post {
-        Students,
-        Professors,
-        Lab_Employees,
-        Director,
-        Admins
+        Students,       //0
+        Professors,     //2
+        Lab_Employees,  //1
+        Director,       //2
+        Admins          //3
     };
 
     enum Access_Level {

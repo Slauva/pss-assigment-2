@@ -6,18 +6,19 @@
 
 class Environment {
    public:
-    Environment();
+    Environment(std::string);
     Environment(Asset* obj);
     void run();
     void auth();
     void create();
-    void terminal(Info::Post post);
+    void terminal();
     static std::string info(std::string);
     static std::string error(std::string);
     static std::string debug(std::string);
     static std::string custom(std::string, std::string);
 
     Asset* system_user;
+    std::string name;
 
     int class_room[4] = {100, 102, 104, 106};
     int labs[4] = {10, 12, 14, 16};
@@ -25,22 +26,16 @@ class Environment {
     int profesor_cabinet[3] = {501, 502, 503};
     int director_cabinet[1] = {1000};
 
+    void print_rooms();
     void red_button();
     void terminated();
-    void change_of_government();
-    void shadowing(Asset);
-    void shadowing(Asset*);
+    void move_out(std::string);
     void drop(std::string);
-    void move_out(Asset);
-    void move_out(Asset*);
-    void drop(Asset);
-    void drop(Asset*);
     void create_exam();
     void new_lessen();
-    void open(int);
+    void open();
 
-    bool access_check(Asset);
-    bool access_check(Asset*);
+    bool access_check(int);
 };
 
 #endif
