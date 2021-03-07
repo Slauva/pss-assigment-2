@@ -28,11 +28,7 @@ void Calendar::save() {
     json table;
     for (auto event : this->e) {
         json container = {event.label, {event.from, event.to}};
-        if (table[event.date].is_null())
-            table[event.date] = {};
-        if (table[event.date][event.room].is_null())
-            table[event.date][event.room] = {};
-        table[event.date][event.room].push_back(container);
+        table[event.date][std::to_string(event.room)].push_back(container);
     }
     out << table << std::endl;
 }
@@ -43,26 +39,26 @@ void Calendar::load() {
     in >> table;
     if (table.is_null())
         return;
-    for (auto& dv : table.items()) {
+    for (auto& dv : table.items()) {  // data - {room - []}
         for (auto& rc : dv.value().items()) {
-            for (auto& lf : rc.value().items()) {
+            auto mer = rc.value().array();          // room - []
+            for (int i = 0; i < mer.size(); i++) {  // [[label:[from, to]]]
                 Event event;
                 event.date = dv.key();
                 event.room = std::stoi(rc.key());
-                event.label = lf.key();
-                for (auto& ft : lf.value().items()) {
-                    event.from = ft.key();
-                    event.to = ft.value();
-                }
+                event.label = mer[i][0];
+                event.from = mer[i][1][0];
+                event.to = mer[i][1][1];
                 this->e.push_back(event);
             }
         }
     }
+    // print();
+    // std::system("pause");
 }
 
 Calendar::Calendar(std::string name) {
     this->name = name;
-    this->e = {};
     load();
 }
 Calendar::~Calendar() {
@@ -96,6 +92,7 @@ bool Calendar::reservation(std::string label, int room, std::string date, std::s
     new_event.label = label;
     new_event.from = from;
     new_event.to = to;
+    bool flag = false;
 
     for (auto event : this->e) {
         if (event.date == date && event.room == room) {
@@ -103,7 +100,13 @@ bool Calendar::reservation(std::string label, int room, std::string date, std::s
                 this->e.push_back(new_event);
                 return true;
             }
+            flag = true;
         }
+    }
+
+    if (!flag) {
+        this->e.push_back(new_event);
+        return true;
     }
     return false;
 }
@@ -125,10 +128,6 @@ void Calendar::print() {
     json table;
     for (auto event : this->e) {
         json container = {event.label, {event.from, event.to}};
-        if (table[event.date].is_null())
-            table[event.date] = {};
-        if (table[event.date][event.room].is_null())
-            table[event.date][event.room] = {};
         table[event.date][event.room].push_back(container);
     }
     std::cout << table.dump(4) << std::endl;

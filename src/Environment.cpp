@@ -91,7 +91,8 @@ void Environment::create() {
 }
 
 void Environment::drop(std::string email) {
-    std::uintmax_t n = fs::remove(fs::current_path() / "..\\data\\persons\\" / email / ".json");
+    std::string path = "..\\data\\persons\\" + email + ".json";
+    std::uintmax_t n = fs::remove(fs::current_path() / path);
 }
 
 void Environment::move_out(std::string email) {
@@ -396,11 +397,38 @@ void Environment::run() {
         std::cout << custom("Pennywise", "Maybe it, not ...") << std::endl;
         std::cout << custom("Freddy Krueger", "And his, not, not on the topic ...") << std::endl;
         std::cout << custom("SAW: John Kramer", "Here's what you need, now you can start)") << std::endl;
+        std::cout << custom("SAW: John Kramer", "Let's make it easier, if you answer my question, then the system is yours, if not ...") << std::endl;
+        std::cout << custom("SAW: John Kramer", "Let's start with a simple one, how much is 999 * 98:");
+        int ans;
+        std::cin >> ans;
+        if (ans == 999 * 98) {
+            std::cout << custom("SAW: John Kramer", "Pfft, this is what I would count.") << std::endl;
+            std::cout << custom("SAW: John Kramer", "I love puzzles very much, and therefore I give my victims a chance to reclaim their property.") << std::endl;
+        } else {
+            std::cout << custom("SAW: John Kramer", "Oh, don't you need a system?") << std::endl;
+            std::cout << custom("SAW: John Kramer", "Okay, I'll forgive you that. But then let's get serious.") << std::endl;
+        }
+        char ans2;
+        std::cout << custom("SAW: John Kramer", "Is it possible to write a function for finding prime numbers in one line,") << std::endl;
+        std::cout << custom("SAW: John Kramer", "So that its T (n) = O (1)? Choose y/n: ");
+        std::cin >> ans2;
+        if (ans2 == 'y') {
+            std::cout << custom("SAW: John Kramer", "And you're cool, it's true| f(x) : (2<<(x - 2))\%x==1") << std::endl;
+            std::cout << custom("SAW: John Kramer", "The system is now yours. The hacker left the chat.") << std::endl;
+            goto win;
+        } else {
+            std::cout << custom("SAW: John Kramer", "It's sad, but I was already hoping that I had found a worthy opponent. Bye)") << std::endl;
+            // terminated()
+        }
     } else {
         std::cout << info("Great, the hacker has moved away, thanks)") << std::endl;
-        std::cout << info("Let's try to enter") << std::endl;
-        this->auth();
-        terminal();
+        while (true) {
+            std::system("cls");
+            std::cout << info("Let's try to enter") << std::endl;
+            this->auth();
+        win:
+            terminal();
+        }
     }
 }
 
