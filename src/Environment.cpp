@@ -1,12 +1,14 @@
 #include "../include/control/Environment.h"
 
+#include <stdio.h>
+
 #include <filesystem>
 #include <fstream>
+#include <iomanip>
 #include <iostream>
 #include <string>
 
 #include "../include/control/Calendar.h"
-
 namespace fs = std::filesystem;
 
 std::string Environment::info(std::string str) {
@@ -104,6 +106,40 @@ void Environment::move_out(std::string email) {
     out.close();
 }
 
+void Environment::print_users() {
+    std::vector<std::string> files;
+    json j;
+
+    for (auto& p : fs::directory_iterator(fs::current_path() / "..\\data\\persons\\"))
+        files.push_back(p.path().filename().string());
+    printf("%15s\t%15s\t%15s\t%15s\t%15s\t%15s\t%30s\t%30s\t\n\n", "Name", "Surname", "Sex", "Age", "Type", "Appartment", "Post", "Email");
+    for (auto file : files) {
+        std::ifstream in("../data/persons/" + file);
+        in >> j;
+        std::string post;
+        if (j["Access"]["Post"] == 0)
+            post = "Student";
+        if (j["Access"]["Post"] == 1)
+            post = "Professor";
+        if (j["Access"]["Post"] == 2)
+            post = "Lab Employees";
+        if (j["Access"]["Post"] == 3)
+            post = "Director";
+        if (j["Access"]["Post"] == 4)
+            post = "Admin";
+        printf(
+            "%15s\t%15s\t%15s\t%15d\t%15s\t%15s\t%30s\t%30s\t\n",
+            j["User"]["Name"].get<std::string>().c_str(),
+            j["User"]["Surname"].get<std::string>().c_str(),
+            j["User"]["Sex"].get<std::string>().c_str(),
+            j["User"]["Age"].get<int>(),
+            j["User"]["Type"].get<std::string>().c_str(),
+            j["User"]["Appartment"].get<std::string>().c_str(),
+            post.c_str(),
+            j["Auth"]["Email"].get<std::string>().c_str());
+    }
+}
+
 void Environment::print_rooms() {
     std::cout << std::endl
               << info("====================================") << std::endl;
@@ -162,6 +198,7 @@ void Environment::terminal() {
             std::cout << info("7) Red Button (Don't worry, Be happy?)") << std::endl;
             std::cout << info("8) SkyNet (Joker trap)") << std::endl;
         }
+        std::cout << info("-2) Print all users") << std::endl;
         std::cout << info("To exit write: '-1'") << std::endl;
         std::cout << info("What do you want: ");
         int command;
@@ -169,6 +206,13 @@ void Environment::terminal() {
         if (command == -1) {
             std::cout << info("Good bey") << std::endl;
             break;
+        }
+        if (command == -2) {
+            std::system("cls");
+            print_users();
+            std::system("pause");
+            std::system("cls");
+            continue;
         }
         std::system("cls");
         // std::system("clear");

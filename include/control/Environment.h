@@ -27,6 +27,7 @@ class Environment {
     int director_cabinet[1] = {1000};
 
     void print_rooms();
+    void print_users();
     void red_button();
     void terminated();
     void move_out(std::string);
