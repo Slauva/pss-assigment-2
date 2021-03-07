@@ -418,7 +418,7 @@ void Environment::run() {
             goto win;
         } else {
             std::cout << custom("SAW: John Kramer", "It's sad, but I was already hoping that I had found a worthy opponent. Bye)") << std::endl;
-            // terminated()
+            terminated();
         }
     } else {
         std::cout << info("Great, the hacker has moved away, thanks)") << std::endl;
