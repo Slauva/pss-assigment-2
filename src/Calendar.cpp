@@ -24,7 +24,7 @@ std::vector<std::string> split(std::string s, std::string delimiter) {
 }
 
 void Calendar::save() {
-    std::ofstream out("calendar.json");
+    std::ofstream out("../data/calendar/calendar.json");
     json table;
     for (auto event : this->e) {
         json container = {event.label, {event.from, event.to}};
@@ -38,9 +38,11 @@ void Calendar::save() {
 }
 
 void Calendar::load() {
-    std::ifstream in("calendar.json");
+    std::ifstream in("../data/calendar/calendar.json");
     json table;
     in >> table;
+    if (table.is_null())
+        return;
     for (auto& dv : table.items()) {
         for (auto& rc : dv.value().items()) {
             for (auto& lf : rc.value().items()) {

@@ -145,7 +145,7 @@ void Environment::open() {
 void Environment::terminal() {
     Calendar table("ios");
     while (true) {
-        std::cout << info("Welcome to terminal.\t Your level access status: " + Info::Access_Level(this->system_user->level)) << std::endl
+        std::cout << info("Welcome to terminal.") << std::endl
                   << std::endl;
         if (this->system_user->level >= 0) {  // No level Access & Green level Access
             std::cout << info("0) Open audience") << std::endl;
@@ -163,14 +163,15 @@ void Environment::terminal() {
             std::cout << info("8) SkyNet (Joker trap)") << std::endl;
         }
         std::cout << info("To exit write: '-1'") << std::endl;
-        std::cout << info("What do you want?") << std::endl;
+        std::cout << info("What do you want: ");
         int command;
         std::cin >> command;
         if (command == -1) {
             std::cout << info("Good bey") << std::endl;
             break;
         }
-        std::system("cln");
+        std::system("cls");
+        // std::system("clear");
         std::string date, label, from, to;
         char l;
         bool ans;
@@ -285,6 +286,8 @@ void Environment::terminal() {
                 break;
         }
         std::system("pause");
+        std::system("cls");
+        // std::system("clear");
     }
 }
 
