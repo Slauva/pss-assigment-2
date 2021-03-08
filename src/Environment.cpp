@@ -372,7 +372,7 @@ void Environment::run() {
     std::cout << error("Or do you want to continue? Choose y/n: ");
     char flag;
     std::cin >> flag;
-    if (flag == 'y') {
+    if (flag == 'l') {
         std::cout << info("Great, the hacker has moved away.") << std::endl;
         std::cout << info("Maybe things are still not so hopeful.") << std::endl;
         std::cout << info("Let's try to enter") << std::endl;
