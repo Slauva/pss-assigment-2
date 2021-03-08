@@ -19,8 +19,8 @@
     -   [Calendar](#calendar)
     -   [Asset](#asset)
     -   [Environment](#env)
--   [Meta](../TODO.md)
--   [Contributing](../CONTRIBUTING.md)
+-   [Meta](#meta)
+-   [Contributing](#contr)
 
 ## 🎈 About
 
@@ -98,9 +98,9 @@ class Calendar {
             {"Label1" : ["Time from", "Time to"]},
         ],
         "110" : [
-            {"Math exam" : [12:00, 14:00]},
-            {"Poker club" : [15:00, 16:00]},
-            {"Dance" : [17:00, 18:00]}
+            {"Math exam" : ["12:00", "14:00"]},
+            {"Poker club" : ["15:00", "16:00"]},
+            {"Dance" : ["17:00", "18:00"]}
         ],
         ...
     },
