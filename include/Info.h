@@ -25,7 +25,8 @@ class Info {
         Lecture_room = GREEN,
         Conference_room = GREEN,
         Cabinet = YELLOW,
-        Director_cabinet = RED
+        Director_cabinet = YELLOW,
+        ALL = RED
     };
 };
 

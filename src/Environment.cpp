@@ -56,6 +56,8 @@ bool Environment::access_check(int room, int mode) {
         case Info::YELLOW:
             if (room != director_cabinet)
                 return true;
+            else if (this->system_user->post == Info::Director)
+                return true;
             return false;
         case Info::RED:
             return true;
