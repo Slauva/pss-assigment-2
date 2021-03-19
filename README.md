@@ -12,22 +12,22 @@
 
 ## 📝 Table of Contents
 
--   [About](#About)
--   [Dependence & System](#dependence)
--   [Development setup](#deployment)
--   [Classes](#built_using)
-    -   [Calendar](#calendar)
-    -   [Asset](#asset)
-    -   [Environment](#env)
--   [Custom users](#users)
--   [Meta](#Meta)
--   [Contributing](#contr)
+-   [About](##about)
+-   [Dependence & System](##dependence-&-system)
+-   [Development setup](##development-setup)
+-   [Classes](##classes)
+    -   [Calendar](###class-calendar)
+    -   [Asset](###class-asset)
+    -   [Environment](###class-Environment)
+-   [Custom users](##custom-users)
+-   [Meta](##meta)
+-   [Contributing](##contributing)
 
-## 🎈 About <a href="#about"></a>
+## 🎈 About
 
 A simple console application designed to demonstrate the operation of standard systems in a university environment for both students and professors. It implements such systems as: database, calendar, user editor, access system. Also, a hacker has crept into the projects with whom you will have to play games your system is at stake, but if you win it, you may find out what's new for yourself.
 
-## 🚀 Development setup <a href="#deployment"></a>
+## 🚀 Development setup
 
 The MakeFile collector is installed in the project. In order to build the file, you need to write in the console
 
@@ -36,16 +36,16 @@ make
 start output/main.exe
 ```
 
-## ⛏️ Dependence & System <a href="#dependence"></a>
+## ⛏️ Dependence & System
 
 -   [Cpp](https://github.com/nlohmann/json) - c++17
 -   [Json](https://github.com/nlohmann/json) - Json for modern C++
 
-## ✍️ Classes <a href="#built_using"></a>
+## ✍️ Classes
 
 Description of classes and their methods
 
-### **class** Calendar <a href="#calendar"></a>
+### **class** Calendar
 
 This object is responsible for recording events, comparing them by date and rooms where they will be held.
 
@@ -271,13 +271,13 @@ class Environment {
 
 **Deleting the entire project with one button, just don't delete the whole game on the first day.**
 
-## Meta <a href="#meta"></a>
+## Meta
 
 Slava Koshman – [@jack_koshman](https://www.instagram.com/jack_koshman/) – main-app@yandex.ru
 
 [https://github.com/Slauva](https://github.com/Slauva/)
 
-## Contributing <a href="#contr"></a>
+## Contributing
 
 1. Fork it (<https://github.com/Slauva/pss-assigment-2/fork>)
 2. Create your feature branch (`git checkout -b feature/fooBar`)
