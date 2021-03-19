@@ -19,14 +19,15 @@
     -   [Calendar](#calendar)
     -   [Asset](#asset)
     -   [Environment](#env)
+-   [Custom users](#users)
 -   [Meta](#meta)
 -   [Contributing](#contr)
 
-## 🎈 About
+## 🎈 About <a href="#about"></a>
 
 A simple console application designed to demonstrate the operation of standard systems in a university environment for both students and professors. It implements such systems as: database, calendar, user editor, access system. Also, a hacker has crept into the projects with whom you will have to play games your system is at stake, but if you win it, you may find out what's new for yourself.
 
-## 🚀 Development setup
+## 🚀 Development setup <a href="#deployment"></a>
 
 The MakeFile collector is installed in the project. In order to build the file, you need to write in the console
 
@@ -35,16 +36,16 @@ make
 start output/main.exe
 ```
 
-## ⛏️ Dependence & System
+## ⛏️ Dependence & System <a href="#dependence"></a>
 
 -   [Cpp](https://github.com/nlohmann/json) - c++17
 -   [Json](https://github.com/nlohmann/json) - Json for modern C++
 
-## ✍️ Classes
+## ✍️ Classes <a href="#built_using"></a>
 
 Description of classes and their methods
 
-### **class** Calendar
+### **class** Calendar <a href="#calendar"></a>
 
 This object is responsible for recording events, comparing them by date and rooms where they will be held.
 
@@ -108,7 +109,7 @@ class Calendar {
 }
 ```
 
-### **class** Asset
+### **class** Asset <a href="#asset"></a>
 
 This object is engaged in storing data about the user, access level.
 
@@ -118,13 +119,15 @@ class Asset {
     User data;
     Info::Post post;
     Info::Access_Level level;
-    string email;
+    std::string email;
 
-    Asset(User data, Info::Post post, Info::Access_Level level, string email, string password);
+    Asset(User data, Info::Post post, Info::Access_Level level, std::string email, std::string password);
+    Asset(Info::Post, Info::Access_Level);
+    ~Asset() { save(); };
 
-    int getId();
+    int getId() { return this->id; };
     void save();
-    static Asset* load(string email, string password);
+    static Asset* load(std::string email, std::string password);
 
    private:
     int password;
@@ -168,27 +171,30 @@ class Asset {
 }
 ```
 
-### **class** Environment
+### **class** Environment <a href="#env"></a>
 
 The main class is where all the manipulation of objects takes place.
 
 ```cpp
 class Environment {
    public:
-    Asset* system_user;
-    std::string name;
-
     Environment(std::string);
-    Environment(Asset* obj);
-    void run();
-    void auth();
+    void auth(int);
     void create();
-    void terminal();
-
     static std::string info(std::string);
     static std::string error(std::string);
     static std::string debug(std::string);
     static std::string custom(std::string, std::string);
+
+    Asset* system_user;
+    std::string name;
+
+    int* class_room;
+    int* labs;
+    int* lecture_room;
+    int* conference_room;
+    int* profesor_cabinet;
+    int director_cabinet;
 
     void print_rooms();
     void print_users();
@@ -198,15 +204,11 @@ class Environment {
     void drop(std::string);
     void create_exam();
     void new_lessen();
-    void open();
+    void open(int);
 
-    bool access_check(int);
+    bool access_check(int, int);
 };
 ```
-
-### Function **Environment::run()**
-
-**Run main code.**
 
 ### Function **Environment::auth()**
 
@@ -215,10 +217,6 @@ class Environment {
 ### Function **Environment::create()**
 
 **Create user in the system.**
-
-### Function **Environment::terminal()**
-
-**A terminal with a function list that is restricted from the user's access level.**
 
 ### Function **Environment::info()**, **Environment::debug()**, **Environment::error()**, **Environment::custom()**
 
@@ -273,13 +271,13 @@ class Environment {
 
 **Deleting the entire project with one button, just don't delete the whole game on the first day.**
 
-## Meta
+## Meta <a href="#meta"></a>
 
 Slava Koshman – [@jack_koshman](https://www.instagram.com/jack_koshman/) – main-app@yandex.ru
 
 [https://github.com/Slauva](https://github.com/Slauva/)
 
-## Contributing
+## Contributing <a href="#contr"></a>
 
 1. Fork it (<https://github.com/Slauva/pss-assigment-2/fork>)
 2. Create your feature branch (`git checkout -b feature/fooBar`)
