@@ -12,7 +12,7 @@
 
 ## 📝 Table of Contents
 
--   [About](#about)
+-   [About](#About)
 -   [Dependence & System](#dependence)
 -   [Development setup](#deployment)
 -   [Classes](#built_using)
@@ -20,7 +20,7 @@
     -   [Asset](#asset)
     -   [Environment](#env)
 -   [Custom users](#users)
--   [Meta](#meta)
+-   [Meta](#Meta)
 -   [Contributing](#contr)
 
 ## 🎈 About <a href="#about"></a>
