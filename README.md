@@ -23,11 +23,11 @@
 -   [Meta](#meta)
 -   [Contributing](#contr)
 
-## 🎈 About <a name="#about"></a>
+## 🎈 About <a name="about"></a>
 
 A simple console application designed to demonstrate the operation of standard systems in a university environment for both students and professors. It implements such systems as: database, calendar, user editor, access system. Also, a hacker has crept into the projects with whom you will have to play games your system is at stake, but if you win it, you may find out what's new for yourself.
 
-## 🚀 Development setup <a name="#dev"></a>
+## 🚀 Development setup <a name="dev"></a>
 
 The MakeFile collector is installed in the project. In order to build the file, you need to write in the console
 
@@ -36,16 +36,16 @@ make
 start output/main.exe
 ```
 
-## ⛏️ Dependence & System <a name="#dep"></a>
+## ⛏️ Dependence & System <a name="dep"></a>
 
 -   [Cpp](https://github.com/nlohmann/json) - c++17
 -   [Json](https://github.com/nlohmann/json) - Json for modern C++
 
-## ✍️ Classes <a name="#class"></a>
+## ✍️ Classes <a name="class"></a>
 
 Description of classes and their methods
 
-### **class** Calendar <a name="#calendar"></a>
+### **class** Calendar <a name="calendar"></a>
 
 This object is responsible for recording events, comparing them by date and rooms where they will be held.
 
@@ -109,7 +109,7 @@ class Calendar {
 }
 ```
 
-### **class** Asset <a name="#asset"></a>
+### **class** Asset <a name="asset"></a>
 
 This object is engaged in storing data about the user, access level.
 
@@ -171,7 +171,7 @@ class Asset {
 }
 ```
 
-### **class** Environment <a name="#env"></a>
+### **class** Environment <a name="env"></a>
 
 The main class is where all the manipulation of objects takes place.
 
@@ -271,7 +271,7 @@ class Environment {
 
 **Deleting the entire project with one button, just don't delete the whole game on the first day.**
 
-## Custom Users <a name="#users"></a>
+## Custom Users <a name="users"></a>
 
 ### Admin account
 
@@ -287,13 +287,13 @@ class Environment {
 > Password: 12345
 ```
 
-## Meta <a name="#meta"></a>
+## Meta <a name="meta"></a>
 
 Slava Koshman – [@jack_koshman](https://www.instagram.com/jack_koshman/) – main-app@yandex.ru
 
 [https://github.com/Slauva](https://github.com/Slauva/)
 
-## Contributing <a name="#contr"></a>
+## Contributing <a name="contr"></a>
 
 1. Fork it (<https://github.com/Slauva/pss-assigment-2/fork>)
 2. Create your feature branch (`git checkout -b feature/fooBar`)
