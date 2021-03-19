@@ -15,7 +15,7 @@ void checker() {
         fs::create_directory(fs::current_path() / "..\\data\\persons");
 }
 
-//* Constructor
+//* Constructors
 Asset::Asset(User data, Info::Post post, Info::Access_Level level, std::string email, std::string password) {
     this->data = data;
     this->post = post;
@@ -24,6 +24,15 @@ Asset::Asset(User data, Info::Post post, Info::Access_Level level, std::string e
     this->password = std::hash<std::string>{}(password);
     int h = std::hash<std::string>{}(email) / 2;
     this->id = abs(this->password + h);
+}
+
+Asset::Asset(Info::Post post, Info::Access_Level level) {
+    this->data = User();
+    this->post = post;
+    this->level = level;
+    this->email = "guest@innopolis.university";
+    this->password = std::hash<std::string>{}("12345");
+    this->id = 0;
 }
 
 //* Save data to json file

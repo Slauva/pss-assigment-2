@@ -10,7 +10,9 @@ class Asset {
     Info::Post post;
     Info::Access_Level level;
     std::string email;
+
     Asset(User data, Info::Post post, Info::Access_Level level, std::string email, std::string password);
+    Asset(Info::Post, Info::Access_Level);
     ~Asset() { save(); };
 
     int getId() { return this->id; };

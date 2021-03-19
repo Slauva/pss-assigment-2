@@ -4,6 +4,7 @@
 class Info {
    public:
     enum Post {
+        Guest = -1,
         Students,       //0
         Professors,     //2
         Lab_Employees,  //1
@@ -12,10 +13,11 @@ class Info {
     };
 
     enum Access_Level {
+        BLUE = -1,
+        NO_LEVEL = 0,
         GREEN = 1,
         YELLOW = 2,
         RED = 3,
-        NO_LEVEL = 0
     };
 
     enum Rooms {

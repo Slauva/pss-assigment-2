@@ -7,9 +7,8 @@
 class Environment {
    public:
     Environment(std::string);
-    Environment(Asset* obj);
     void run();
-    void auth();
+    void auth(int);
     void create();
     void terminal();
     static std::string info(std::string);
@@ -20,11 +19,11 @@ class Environment {
     Asset* system_user;
     std::string name;
 
-    int class_room[4] = {100, 102, 104, 106};
-    int labs[4] = {10, 12, 14, 16};
-    int lecture_room[2] = {107, 108};
-    int profesor_cabinet[3] = {501, 502, 503};
-    int director_cabinet[1] = {1000};
+    int* class_room;
+    int* labs;
+    int* lecture_room;
+    int* profesor_cabinet;
+    int director_cabinet;
 
     void print_rooms();
     void print_users();

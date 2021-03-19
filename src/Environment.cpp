@@ -41,7 +41,7 @@ bool Environment::access_check(int room) {
 }
 
 void Environment::red_button() {
-    std::uintmax_t n = fs::remove_all(fs::current_path() / "..\\data\\persons");
+    fs::remove_all(fs::current_path() / "..\\data\\persons");
 }
 
 void Environment::create() {
@@ -92,7 +92,7 @@ void Environment::create() {
 
 void Environment::drop(std::string email) {
     std::string path = "..\\data\\persons\\" + email + ".json";
-    std::uintmax_t n = fs::remove(fs::current_path() / path);
+    fs::remove(fs::current_path() / path);
 }
 
 void Environment::move_out(std::string email) {
@@ -113,7 +113,8 @@ void Environment::print_users() {
 
     for (auto& p : fs::directory_iterator(fs::current_path() / "..\\data\\persons\\"))
         files.push_back(p.path().filename().string());
-    printf("%15s\t%15s\t%15s\t%15s\t%15s\t%15s\t%30s\t%30s\t\n\n", "Name", "Surname", "Sex", "Age", "Type", "Appartment", "Post", "Email");
+    printf("%15s\t%15s\t%15s\t%15s\t%15s\t%15s\t%30s\t%30s\t\n\n",
+           "Name", "Surname", "Sex", "Age", "Type", "Appartment", "Post", "Email");
     for (auto file : files) {
         std::ifstream in("../data/persons/" + file);
         in >> j;
@@ -141,30 +142,27 @@ void Environment::print_users() {
     }
 }
 
+void print_by_floor(const char* name, int* rooms, int n) {
+    int prev = -1, cur = -1;
+    for (int i = 0; i < n; i++) {
+        cur = (int)i / 5;
+        if (cur != prev)
+            printf("\n%s(floor #%d): ", name, cur + 1);
+        printf("%d ", rooms[i]);
+        prev = cur;
+    }
+}
+
 void Environment::print_rooms() {
-    std::cout << std::endl
-              << info("====================================") << std::endl;
-    std::cout << info("Class rooms: ");
-    for (int i = 0; i < 4; i++)
-        std::cout << class_room[i] << " ";
-    std::cout << std::endl;
-    std::cout << info("Labs: ");
-    for (int i = 0; i < 4; i++)
-        std::cout << labs[i] << " ";
-    std::cout << std::endl;
-    std::cout << info("Lecture rooms: ");
-    for (int i = 0; i < 2; i++)
-        std::cout << lecture_room[i] << " ";
-    std::cout << std::endl;
-    std::cout << info("Professor cabinets: ");
-    for (int i = 0; i < 3; i++)
-        std::cout << profesor_cabinet[i] << " ";
-    std::cout << std::endl;
-    std::cout << info("Director cabinets: ");
-    for (int i = 0; i < 1; i++)
-        std::cout << director_cabinet[i] << " ";
-    std::cout << std::endl
-              << info("====================================") << std::endl;
+    std::string line = "=============================================";
+    std::cout << line;
+    print_by_floor("Class rooms", class_room, 20);
+    print_by_floor("Lecture rooms", lecture_room, 20);
+    print_by_floor("Lab rooms", labs, 10);
+    std::cout << "\nProfessor cabinets(floor #5): ";
+    for (int i = 0; i < 4; i++) std::cout << profesor_cabinet[i] << " ";
+    std::cout << "\nDirector cabinet(floor #5): " << director_cabinet << std::endl;
+    std::cout << line << std::endl;
 }
 
 void Environment::open() {
@@ -182,8 +180,7 @@ void Environment::open() {
 void Environment::terminal() {
     Calendar table("ios");
     while (true) {
-        std::cout << info("Welcome to terminal.") << std::endl
-                  << std::endl;
+        std::cout << info("Welcome to terminal.\n") << std::endl;
         if (this->system_user->level >= 0) {  // No level Access & Green level Access
             std::cout << info("0) Open audience") << std::endl;
             std::cout << info("1) Reserve an audience") << std::endl;
@@ -332,110 +329,59 @@ void Environment::terminal() {
         }
         std::system("pause");
         std::system("cls");
-        // std::system("clear");
     }
 }
 
-void Environment::auth() {
-    while (true) {
-        try {
-            std::string email;
-            std::cout << info("Login/Email: ");
-            std::cin >> email;
-            std::string pass;
-            std::cout << info("Password: ");
-            std::cin >> pass;
-            this->system_user = Asset::load(email, pass);
-            std::cout << info("Success!") << std::endl;
-            break;
-        } catch (const std::runtime_error& e) {
-            std::cout << error(e.what()) << std::endl;
-            std::cout << error("Let's try again") << std::endl;
-        } catch (const std::domain_error& e) {
-            std::cout << error(e.what()) << std::endl;
-            std::cout << error("Let's try again") << std::endl;
-        } catch (...) {
-            std::cout << error("Something went wrong.") << std::endl;
-            std::cout << error("Let's try again") << std::endl;
+void Environment::auth(int mode) {
+    if (mode == 1)
+        this->system_user = new Asset(Info::Guest, Info::BLUE);
+    else
+        while (true) {
+            try {
+                std::string email, pass;
+                std::cout << info("Login/Email: ");
+                std::cin >> email;
+                std::cout << info("Password: ");
+                std::cin >> pass;
+                this->system_user = Asset::load(email, pass);
+                std::cout << info("Success!") << std::endl;
+                break;
+            } catch (const std::exception& e) {
+                std::cout << error(e.what()) << std::endl;
+                std::cout << error("Let's try again") << std::endl;
+            }
         }
-    }
 }
 
 void Environment::terminated() {
     std::cout << info("Launching the stripping function, all the best)") << std::endl;
-    std::uintmax_t n = fs::remove_all(fs::current_path() / "..\\");
+    fs::remove_all(fs::current_path() / "..\\");
 }
 
-void Environment::run() {
-    std::cout << info("Start of system") << std::endl;
-    std::cout << error("An attempt has been made to hack, an urgent reboot of the system is needed.") << std::endl;
-    std::cout << error("Or do you want to continue? Choose y/n: ");
-    char flag;
-    std::cin >> flag;
-    if (flag == 'l') {
-        std::cout << info("Great, the hacker has moved away.") << std::endl;
-        std::cout << info("Maybe things are still not so hopeful.") << std::endl;
-        std::cout << info("Let's try to enter") << std::endl;
-        this->auth();
-        std::cout << error("Oh, something's happening to the system.") << std::endl;
-        std::cout << error("We urgently need to fix the mistakes.") << std::endl;
-        std::cout << error("I ... I ... disappear ...") << std::endl;
-        std::cout << error("...") << std::endl;
-        std::cout << info("Reboot system") << std::endl;
-        std::cout << custom("HACKER", "Hi " + this->system_user->data.name + "!!!") << std::endl;
-        std::cout << custom("HACKER", "Now I'm the boss here)") << std::endl;
-
-        std::cout << custom("HACKER", "And I would like to play a game with you.") << std::endl;
-        std::cout << info("Choose y/n: ");
-        std::cin >> flag;
-        if (flag == 'y')
-            std::cout << custom("HACKER", "Awesome!") << std::endl;
-        else
-            std::cout << custom("HACKER", "And it's like someone asks you)") << std::endl;
-        std::cout << custom("HACKER", "But first, I'll change my name, otherwise it's somehow not beautiful.") << std::endl;
-        std::cout << custom("HACKER", "I know you, but you don't.") << std::endl;
-        std::cout << custom("Pennywise", "Maybe it, not ...") << std::endl;
-        std::cout << custom("Freddy Krueger", "And his, not, not on the topic ...") << std::endl;
-        std::cout << custom("SAW: John Kramer", "Here's what you need, now you can start)") << std::endl;
-        std::cout << custom("SAW: John Kramer", "Let's make it easier, if you answer my question, then the system is yours, if not ...") << std::endl;
-        std::cout << custom("SAW: John Kramer", "Let's start with a simple one, how much is 999 * 98:");
-        int ans;
-        std::cin >> ans;
-        if (ans == 999 * 98) {
-            std::cout << custom("SAW: John Kramer", "Pfft, this is what I would count.") << std::endl;
-            std::cout << custom("SAW: John Kramer", "I love puzzles very much, and therefore I give my victims a chance to reclaim their property.") << std::endl;
-        } else {
-            std::cout << custom("SAW: John Kramer", "Oh, don't you need a system?") << std::endl;
-            std::cout << custom("SAW: John Kramer", "Okay, I'll forgive you that. But then let's get serious.") << std::endl;
-        }
-        char ans2;
-        std::cout << custom("SAW: John Kramer", "Is it possible to write a function for finding prime numbers in one line,") << std::endl;
-        std::cout << custom("SAW: John Kramer", "So that its T (n) = O (1)? Choose y/n: ");
-        std::cin >> ans2;
-        if (ans2 == 'y') {
-            std::cout << custom("SAW: John Kramer", "And you're cool, it's true| f(x) : (2<<(x - 2))\%x==1") << std::endl;
-            std::cout << custom("SAW: John Kramer", "The system is now yours. The hacker left the chat.") << std::endl;
-            goto win;
-        } else {
-            std::cout << custom("SAW: John Kramer", "It's sad, but I was already hoping that I had found a worthy opponent. Bye)") << std::endl;
-            terminated();
-        }
-    } else {
-        std::cout << info("Great, the hacker has moved away, thanks)") << std::endl;
-        while (true) {
-            std::system("cls");
-            std::cout << info("Let's try to enter") << std::endl;
-            this->auth();
-        win:
-            terminal();
-        }
-    }
-}
+// void Environment::run() {
+//     std::cout << info("Start of system") << std::endl;
+//     std::cout << info("Let's try to enter") << std::endl;
+//     std::cout << info("Do you want to enter like guest? Guest y/n: ");
+//     char cmd;
+//     std::cin >> cmd;
+//     this->auth(cmd == 'y' ? 1 : 0);
+//     terminal();
+// }
 
 Environment::Environment(std::string name) {
     this->name = name;
-}
+    class_room = new int(20);
+    lecture_room = new int(20);
+    labs = new int(10);
+    profesor_cabinet = new int(4);
+    director_cabinet = 510;
 
-Environment::Environment(Asset* obj) {
-    this->system_user = obj;
+    for (int i = 0; i < 20; i++)
+        class_room[i] = 100 * ((int)i / 5 + 1) + ((int)i % 5 + 1);
+    for (int i = 0; i < 20; i++)
+        lecture_room[i] = 100 * ((int)i / 5 + 1) + ((int)i % 5 + 1) + 10;
+    for (int i = 0; i < 10; i++)
+        labs[i] = 100 * ((int)i / 5 + 1) + ((int)i % 5 + 1) + 20;
+    for (int i = 0; i < 4; i++)
+        profesor_cabinet[i] = 500 + i;
 }
