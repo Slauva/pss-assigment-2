@@ -7,10 +7,8 @@
 class Environment {
    public:
     Environment(std::string);
-    void run();
     void auth(int);
     void create();
-    void terminal();
     static std::string info(std::string);
     static std::string error(std::string);
     static std::string debug(std::string);
@@ -22,6 +20,7 @@ class Environment {
     int* class_room;
     int* labs;
     int* lecture_room;
+    int* conference_room;
     int* profesor_cabinet;
     int director_cabinet;
 
@@ -33,9 +32,9 @@ class Environment {
     void drop(std::string);
     void create_exam();
     void new_lessen();
-    void open();
+    void open(int);
 
-    bool access_check(int);
+    bool access_check(int, int);
 };
 
 #endif

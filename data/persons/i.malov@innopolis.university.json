@@ -1,1 +1,19 @@
-{"Access":{"Access Level":1,"Post":2},"Auth":{"Email":"i.malov@innopolis.university","Id":672204986,"Password":-117875188},"User":{"Age":18,"Appartment":"-","Name":"Igor","Sex":"Male","Surname":"Malov","Type":"Bro"}}
+{
+    "Access": {
+        "Access Level": 1,
+        "Post": 2
+    },
+    "Auth": {
+        "Email": "i.malov@innopolis.university",
+        "Id": 672204986,
+        "Password": -117875188
+    },
+    "User": {
+        "Age": 18,
+        "Appartment": "",
+        "Name": "Igor",
+        "Sex": "Male",
+        "Surname": "Malov",
+        "Type": "Bro"
+    }
+}

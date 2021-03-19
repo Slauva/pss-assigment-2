@@ -27,17 +27,41 @@ std::string Environment::custom(std::string type, std::string str) {
     return "[" + type + "]:\t " + str;
 }
 
-bool Environment::access_check(int room) {
-    if (this->system_user->level >= 2)
-        return true;
-    else if (this->system_user->level == 1) {
-        if (10 <= room && room <= 108)
+bool in(int target, int* arr, int n) {
+    for (int i = 0; i < n; i++)
+        if (target == arr[i])
             return true;
-        return false;
-    } else if (100 <= room && room <= 106)
+    return false;
+}
+
+bool Environment::access_check(int room, int mode) {
+    if (mode == 1)
         return true;
-    else
-        return false;
+    switch (this->system_user->level) {
+        case Info::BLUE:
+            if (in(room, class_room, 5))
+                return true;
+            if (in(room, lecture_room, 5))
+                return true;
+            return false;
+            break;
+        case Info::GREEN:
+            if (in(room, class_room, 20))
+                return true;
+            if (in(room, lecture_room, 20))
+                return true;
+            if (in(room, conference_room, 20))
+                return true;
+            return false;
+        case Info::YELLOW:
+            if (room != director_cabinet)
+                return true;
+            return false;
+        case Info::RED:
+            return true;
+        default:
+            return false;
+    }
 }
 
 void Environment::red_button() {
@@ -52,7 +76,7 @@ void Environment::create() {
     std::cin >> user.name;
     std::cout << info("Surname: ");
     std::cin >> user.surname;
-    std::cout << info("Sex(Male/Female): ");
+    std::cout << info("Sex(Male/Female/Other): ");
     std::cin >> user.sex;
     std::cout << info("Type('-'/Aching/Whispering): ");
     std::cin >> user.type;
@@ -97,6 +121,10 @@ void Environment::drop(std::string email) {
 
 void Environment::move_out(std::string email) {
     std::ifstream in("../data/persons/" + email + ".json");
+    if (in.fail()) {
+        std::cout << error("Incorrect email") << std::endl;
+        return;
+    }
     json j;
     in >> j;
     in.close();
@@ -159,176 +187,22 @@ void Environment::print_rooms() {
     print_by_floor("Class rooms", class_room, 20);
     print_by_floor("Lecture rooms", lecture_room, 20);
     print_by_floor("Lab rooms", labs, 10);
+    print_by_floor("Conference rooms", conference_room, 20);
     std::cout << "\nProfessor cabinets(floor #5): ";
     for (int i = 0; i < 4; i++) std::cout << profesor_cabinet[i] << " ";
     std::cout << "\nDirector cabinet(floor #5): " << director_cabinet << std::endl;
     std::cout << line << std::endl;
 }
 
-void Environment::open() {
+void Environment::open(int mode) {
     print_rooms();
     int room;
     std::cout << info("Which room you need: ");
     std::cin >> room;
-    if (access_check(room)) {
+    if (access_check(room, mode)) {
         std::cout << info("You got in, sweet brat " + this->system_user->data.name) << std::endl;
     } else {
         std::cout << error("You don't have permission or the room doesn't exist!") << std::endl;
-    }
-}
-
-void Environment::terminal() {
-    Calendar table("ios");
-    while (true) {
-        std::cout << info("Welcome to terminal.\n") << std::endl;
-        if (this->system_user->level >= 0) {  // No level Access & Green level Access
-            std::cout << info("0) Open audience") << std::endl;
-            std::cout << info("1) Reserve an audience") << std::endl;
-        }
-        if (this->system_user->level >= 2) {  // Yellow level Access
-            std::cout << info("2) Create exam") << std::endl;
-            std::cout << info("3) Create new lessen") << std::endl;
-            std::cout << info("4) Good bey student (DROP)") << std::endl;
-            std::cout << info("5) Move out student") << std::endl;
-        }
-        if (this->system_user->level == 3) {  // Red level Access
-            std::cout << info("6) Create user") << std::endl;
-            std::cout << info("7) Red Button (Don't worry, Be happy?)") << std::endl;
-            std::cout << info("8) SkyNet (Joker trap)") << std::endl;
-        }
-        std::cout << info("-2) Print all users") << std::endl;
-        std::cout << info("To exit write: '-1'") << std::endl;
-        std::cout << info("What do you want: ");
-        int command;
-        std::cin >> command;
-        if (command == -1) {
-            std::cout << info("Good bey") << std::endl;
-            break;
-        }
-        if (command == -2) {
-            std::system("cls");
-            print_users();
-            std::system("pause");
-            std::system("cls");
-            continue;
-        }
-        std::system("cls");
-        // std::system("clear");
-        std::string date, label, from, to;
-        char l;
-        bool ans;
-        int room;
-        switch (command) {
-            case 0:
-                open();
-                break;
-            case 1:
-                print_rooms();
-                std::cout << info("What's name of your party: ");
-                std::cin >> label;
-                std::cout << info("Date(dd/mm/yyyy): ");
-                std::cin >> date;
-                std::cout << info("From(HH:mm): ");
-                std::cin >> from;
-                std::cout << info("To(HH:mm): ");
-                std::cin >> to;
-                std::cout << info("Room: ");
-                std::cin >> room;
-                while (!access_check(room)) {
-                    std::cout << error("You don't have permission or the room doesn't exist!") << std::endl;
-                    std::cout << info("Choose another room: ");
-                    std::cin >> room;
-                }
-                ans = table.reservation(label, room, date, from, to);
-                if (ans)
-                    std::cout << info("Success") << std::endl;
-                else
-                    std::cout << info("The room is busy");
-                break;
-            case 2:
-                print_rooms();
-                std::cout << info("What's name of your exam: ");
-                std::cin >> label;
-                std::cout << info("Date(dd/mm/yyyy): ");
-                std::cin >> date;
-                std::cout << info("From(HH:mm): ");
-                std::cin >> from;
-                std::cout << info("To(HH:mm): ");
-                std::cin >> to;
-                std::cout << info("Room: ");
-                std::cin >> room;
-                while (!access_check(room)) {
-                    std::cout << error("You don't have permission or the room doesn't exist!") << std::endl;
-                    std::cout << info("Choose another room: ");
-                    std::cin >> room;
-                }
-                table.reservation(label, room, date, from, to);
-                if (ans)
-                    std::cout << info("Success") << std::endl;
-                else
-                    std::cout << info("The room is busy");
-                break;
-            case 3:
-                print_rooms();
-                std::cout << info("What's name of your lessen: ");
-                std::cin >> label;
-                std::cout << info("Date(dd/mm/yyyy): ");
-                std::cin >> date;
-                std::cout << info("From(HH:mm): ");
-                std::cin >> from;
-                std::cout << info("To(HH:mm): ");
-                std::cin >> to;
-                std::cout << info("Room: ");
-                std::cin >> room;
-                while (!access_check(room)) {
-                    std::cout << error("You don't have permission or the room doesn't exist!") << std::endl;
-                    std::cout << info("Choose another room: ");
-                    std::cin >> room;
-                }
-                table.reservation(label, room, date, from, to);
-                if (ans)
-                    std::cout << info("Success") << std::endl;
-                else
-                    std::cout << info("The room is busy");
-                break;
-            case 4:
-                std::cout << info("Email of target: ");
-                std::cin >> date;
-                drop(date);
-                std::cout << info("Success") << std::endl;
-                break;
-            case 5:
-                std::cout << info("Email of target: ");
-                std::cin >> date;
-                move_out(date);
-                std::cout << info("Success") << std::endl;
-                break;
-            case 6:
-                create();
-                break;
-            case 7:
-                std::cout << custom("WARNING", "There will be no way back, are you sure?") << std::endl;
-                std::cout << custom("WARNING", "Start y/n: ");
-                std::cin >> l;
-                if (l == 'y')
-                    create();
-                else
-                    std::cout << custom("WARNING", "Cancel") << std::endl;
-                break;
-            case 8:
-                std::cout << custom("WARNING", "There will be no way back, are you sure?") << std::endl;
-                std::cout << custom("WARNING", "Start y/n: ");
-                std::cin >> l;
-                if (l == 'y')
-                    terminated();
-                else
-                    std::cout << custom("WARNING", "Cancel") << std::endl;
-                break;
-            default:
-                break;
-        }
-        std::system("pause");
-        std::system("cls");
     }
 }
 
@@ -358,20 +232,11 @@ void Environment::terminated() {
     fs::remove_all(fs::current_path() / "..\\");
 }
 
-// void Environment::run() {
-//     std::cout << info("Start of system") << std::endl;
-//     std::cout << info("Let's try to enter") << std::endl;
-//     std::cout << info("Do you want to enter like guest? Guest y/n: ");
-//     char cmd;
-//     std::cin >> cmd;
-//     this->auth(cmd == 'y' ? 1 : 0);
-//     terminal();
-// }
-
 Environment::Environment(std::string name) {
     this->name = name;
     class_room = new int(20);
     lecture_room = new int(20);
+    conference_room = new int(20);
     labs = new int(10);
     profesor_cabinet = new int(4);
     director_cabinet = 510;
@@ -380,6 +245,8 @@ Environment::Environment(std::string name) {
         class_room[i] = 100 * ((int)i / 5 + 1) + ((int)i % 5 + 1);
     for (int i = 0; i < 20; i++)
         lecture_room[i] = 100 * ((int)i / 5 + 1) + ((int)i % 5 + 1) + 10;
+    for (int i = 0; i < 20; i++)
+        conference_room[i] = 100 * ((int)i / 5 + 1) + ((int)i % 5 + 1) + 30;
     for (int i = 0; i < 10; i++)
         labs[i] = 100 * ((int)i / 5 + 1) + ((int)i % 5 + 1) + 20;
     for (int i = 0; i < 4; i++)
