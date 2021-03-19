@@ -120,7 +120,12 @@ int main() {
         char cmd;
         std::cin >> cmd;
         env.auth(cmd == 'y' ? 1 : 0);
-        terminal(env, 0);
+        std::cout << env.custom("WARNING", "A fire alarm went off at the university.") << std::endl;
+        std::cout << env.custom("WARNING", "Activate an emergency? y/n: ");
+        std::cin >> cmd;
+        std::cout << env.custom("WARNING", cmd == 'y' ? "All rooms were opened" : "Fortunately, the guard checked and found out that they were smoking students. Training alarm.");
+        std::system("pause");
+        terminal(env, cmd == 'y' ? 1 : 0);
     }
     std::system("pause");
     return 0;
